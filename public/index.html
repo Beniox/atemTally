@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Tally</title>
+    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"
+            integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+"
+            crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+</head>
+<body>
+<h1>Atem Tally</h1>
+
+<div>
+    <video id="video" class="video" autoplay muted></video>
+    <div id="cameras">
+        <div id="camera1" class="cameras">1</div>
+        <div id="camera2" class="cameras">2</div>
+        <div id="camera3" class="cameras">3</div>
+        <div id="camera4" class="cameras">4</div>
+    </div>
+</div>
+
+
+<canvas id="canvas" class="video"></canvas>
+
+
+<div id="help">
+    <button id="helpButton" class="btn btn-primary">Help</button>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <h3 class="card-title">Settings</h3>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">CameraID</span>
+            <input type="text" id="cameraID" class="form-control" placeholder="CameraID" aria-label="CameraID"
+                   aria-describedby="basic-addon1">
+        </div>
+    </div>
+</div>
+
+
+<script>
+    const cameraID = document.getElementById('cameraID')
+    const cameras = document.getElementsByClassName('cameras');
+    cameraID.addEventListener('change', saveCameraID)
+
+    const socket = io('/');
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const context = canvas.getContext('2d');
+
+    context.fillStyle = 'yellow';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    video.srcObject = canvas.captureStream();
+
+    socket.on('connect', () => {
+        console.log('connected');
+    });
+    socket.on('disconnect', () => {
+        console.log('disconnected');
+    });
+    socket.on('state', (data) => {
+        console.log(data)
+        const camID = Number(cameraID.value)
+        if (data.video.preview === camID) {
+            context.fillStyle = 'green';
+        }
+        if (data.video.program === camID) {
+            context.fillStyle = 'red';
+        }
+        if (data.video.preview !== camID && data.video.program !== camID) {
+            context.fillStyle = 'white';
+        }
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        video.srcObject = canvas.captureStream();
+
+        for (let i = 0; i < cameras.length; i++) {
+            if (i + 1 === data.video.program) {
+                cameras[i].style.backgroundColor = 'red';
+            } else if (i + 1 === data.video.preview) {
+                cameras[i].style.backgroundColor = 'green';
+            } else {
+                cameras[i].style.backgroundColor = 'white';
+            }
+        }
+
+    });
+
+    function loadCameraID() {
+        let id = localStorage.getItem('cameraID')
+        if (id) {
+            cameraID.value = id
+        }
+    }
+
+    loadCameraID();
+
+    function saveCameraID() {
+        localStorage.setItem('cameraID', cameraID.value)
+    }
+
+</script>
+</body>
+
+<style>
+    body {
+        background-color: #333;
+        color: #fff;
+        font-family: sans-serif;
+    }
+
+    .video {
+        width: 100%;
+    }
+
+    #canvas {
+        display: none;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    #cameras {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        gap: 10px;
+    }
+
+    #cameras div {
+        background-color: yellow;
+        width: 25%;
+        height: 50px;
+        color: #000;
+    }
+
+</style>
+
+</html>
