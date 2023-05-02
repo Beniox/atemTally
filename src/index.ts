@@ -21,7 +21,8 @@ const atemState: AtemState = {
     video: {
         program: 0,
         preview: 0
-    }
+    },
+    connected: false
 }
 
 io.on("connection", (socket) => {
@@ -45,6 +46,14 @@ myAtem.on('connected', () => {
     console.log('connected');
     atemState.video.program = myAtem.state.video.mixEffects[0].programInput;
     atemState.video.preview = myAtem.state.video.mixEffects[0].previewInput;
+    atemState.connected = true;
+    io.emit("state", atemState);
+});
+
+myAtem.on('disconnected', () => {
+    console.log('disconnected');
+    atemState.connected = false;
+    io.emit("state", atemState);
 });
 
 myAtem.on('stateChanged', (state: any, pathToChange: any) => {
@@ -62,5 +71,6 @@ type AtemState = {
         program: number;
         preview: number;
     }
+    connected: boolean;
 }
 

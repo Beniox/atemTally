@@ -61,8 +61,12 @@ class Connection {
      * @param data {Object}
      */
     onState(data) {
-        console.log(data);
         Connection.instance.lastState = data;
+        if (!data.connected) {
+            Connection.instance.showError();
+            return;
+        }
+        ErrorAlert.hide();
         if (data.video.program === Connection.instance.options.cameraID) {
             context.fillStyle = 'red';
         } else if (data.video.preview === Connection.instance.options.cameraID) {
@@ -71,6 +75,7 @@ class Connection {
             context.fillStyle = 'white';
         }
         context.fillRect(0, 0, canvas.width, canvas.height);
+        video.srcObject = canvas.captureStream();
 
         for (let i = 0; i < cameras.length; i++) {
             if (i + 1 === data.video.program) {
@@ -83,6 +88,7 @@ class Connection {
         }
 
     }
+
 
     /**
      * When Socket.IO throws an error
@@ -105,9 +111,19 @@ class Connection {
      */
     disconnected() {
         console.log('disconnected');
+        ErrorAlert.display('Disconnected from server');
+        Connection.instance.showError();
+    }
+
+    showError() {
+        ErrorAlert.display('ATEM not connected');
         context.fillStyle = 'yellow';
         context.fillRect(0, 0, canvas.width, canvas.height);
-        ErrorAlert.display('Disconnected from server');
+        video.srcObject = canvas.captureStream();
+
+        for (const element of cameras) {
+            element.style.backgroundColor = 'yellow';
+        }
     }
 
     /**
