@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>Tally</title>
+    <title>Title</title>
     <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"
             integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+"
             crossorigin="anonymous"></script>
@@ -12,6 +12,10 @@
 </head>
 <body>
 <h1>Atem Tally</h1>
+<div class="alert alert-danger" role="alert" id="errorAlert">
+    A simple danger alert—check it out!
+</div>
+
 
 <div>
     <video id="video" class="video" autoplay muted></video>
@@ -27,84 +31,41 @@
 <canvas id="canvas" class="video"></canvas>
 
 
-<div id="help">
-    <button id="helpButton" class="btn btn-primary">Help</button>
-</div>
+<!--<div id="help">-->
+<!--    <button id="helpButton" class="btn btn-primary">Help</button>-->
+<!--</div>-->
 
-<div class="card">
-    <div class="card-body">
-        <h3 class="card-title">Settings</h3>
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1">CameraID</span>
-            <input type="text" id="cameraID" class="form-control" placeholder="CameraID" aria-label="CameraID"
-                   aria-describedby="basic-addon1">
+<button id="settings" class="btn btn-primary" onclick="openSettings()">Settings</button>
+
+<div id="settingsPage">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Settings</h3>
+        </div>
+        <div class="card-body">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">CameraID</span>
+                <input type="text" id="settingsCameraID" class="form-control" placeholder="CameraID" aria-label="CameraID"
+                       aria-describedby="basic-addon1" value="1">
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon2">Server url</span>
+                <input type="text" id="settingsUrl" class="form-control" placeholder="default" aria-label="CameraID"
+                       aria-describedby="basic-addon2">
+            </div>
+        </div>
+        <div class="card-footer">
+            <button id="saveSettings" class="btn btn-primary" onclick="saveSettings()">Save</button>
+            <button id="closeSettings" class="btn btn-primary" onclick="closeSettings()">Cancel</button>
         </div>
     </div>
 </div>
 
 
-<script>
-    const cameraID = document.getElementById('cameraID')
-    const cameras = document.getElementsByClassName('cameras');
-    cameraID.addEventListener('change', saveCameraID)
-
-    const socket = io('/');
-    const video = document.getElementById('video');
-    const canvas = document.getElementById('canvas');
-    const context = canvas.getContext('2d');
-
-    context.fillStyle = 'yellow';
-    context.fillRect(0, 0, canvas.width, canvas.height);
-    video.srcObject = canvas.captureStream();
-
-    socket.on('connect', () => {
-        console.log('connected');
-    });
-    socket.on('disconnect', () => {
-        console.log('disconnected');
-    });
-    socket.on('state', (data) => {
-        console.log(data)
-        const camID = Number(cameraID.value)
-        if (data.video.preview === camID) {
-            context.fillStyle = 'green';
-        }
-        if (data.video.program === camID) {
-            context.fillStyle = 'red';
-        }
-        if (data.video.preview !== camID && data.video.program !== camID) {
-            context.fillStyle = 'white';
-        }
-        context.fillRect(0, 0, canvas.width, canvas.height);
-        video.srcObject = canvas.captureStream();
-
-        for (let i = 0; i < cameras.length; i++) {
-            if (i + 1 === data.video.program) {
-                cameras[i].style.backgroundColor = 'red';
-            } else if (i + 1 === data.video.preview) {
-                cameras[i].style.backgroundColor = 'green';
-            } else {
-                cameras[i].style.backgroundColor = 'white';
-            }
-        }
-
-    });
-
-    function loadCameraID() {
-        let id = localStorage.getItem('cameraID')
-        if (id) {
-            cameraID.value = id
-        }
-    }
-
-    loadCameraID();
-
-    function saveCameraID() {
-        localStorage.setItem('cameraID', cameraID.value)
-    }
-
-</script>
+<script src="script.js"></script>
 </body>
+
+</html>
 
 <style>
     body {
@@ -129,6 +90,7 @@
         display: flex;
         flex-direction: row;
         justify-content: space-around;
+        border: 1px solid #fff;
         gap: 10px;
     }
 
@@ -139,6 +101,18 @@
         color: #000;
     }
 
-</style>
+    #settingsPage {
+        display: none;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: #333;
+    }
 
-</html>
+    #errorAlert {
+        display: none;
+    }
+
+</style>
