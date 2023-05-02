@@ -22,8 +22,9 @@ Also, a browser is required to display the tally light, a phone or tablet will d
 - [Express](https://expressjs.com/)
 - [Socket.io](https://socket.io/)
 - [atem-connection](https://www.npmjs.com/package/atem-connection)
+- [node-notifier](https://www.npmjs.com/package/node-notifier)
 
 ## Goals
 - [x] Display tally light in browser
-- [ ] Add communication Channel
+- [x] Add communication Channel
 - [ ] Live preview

@@ -8,6 +8,8 @@ dotenv.config()
 const {Atem} = require('atem-connection');
 const myAtem = new Atem();
 
+const notifier = require('node-notifier');
+
 myAtem.on('info', console.log);
 myAtem.on('error', console.error);
 myAtem.connect(process.env.ATEM_IP);
@@ -34,6 +36,18 @@ io.on("connection", (socket) => {
 
     socket.on("help", (message) => {
         console.log(message);
+        let msg = ""
+        if(message.type === "attention") {
+            msg = `Camera ${message.camera} needs attention`
+        }
+        if(message.type === "cameraChange") {
+            msg = `Camera ${message.camera} wants to be changed`
+        }
+
+        notifier.notify({
+            title: message.type,
+            message: msg,
+        });
     });
 
     socket.on("disconnect", () => {

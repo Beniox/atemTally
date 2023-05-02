@@ -127,11 +127,25 @@ class Connection {
     }
 
     /**
-     * Send data to server
-     * @param data
+     * Request to change Camera
      */
-    send(data) {
-        this.socket.emit('state', data);
+    sendCameraChange() {
+        const msg = {
+            camera: Connection.instance.options.cameraID,
+            type: 'cameraChange'
+        }
+        this.socket.emit('help', msg);
+    }
+
+    /**
+     * Request for Attention
+     */
+    sendAttention() {
+        const msg = {
+            camera: Connection.instance.options.cameraID,
+            type: 'attention'
+        }
+        this.socket.emit('help', msg);
     }
 
     /**
@@ -160,7 +174,6 @@ Connection();
 
 function openSettings() {
     document.getElementById('settingsPage').style.display = 'block';
-    document.getElementById('settingsUrl').value = Connection.instance.options.url;
     document.getElementById('settingsCameraID').value = Connection.instance.options.cameraID;
 }
 
@@ -169,9 +182,7 @@ function closeSettings() {
 }
 
 function saveSettings() {
-    const url = document.getElementById('settingsUrl').value;
     const cameraID = Number(document.getElementById('settingsCameraID').value);
-    Connection.instance.options.url = url;
     Connection.instance.options.cameraID = cameraID;
     Connection.instance.saveOptions();
     closeSettings();

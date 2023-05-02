@@ -31,9 +31,10 @@
 <canvas id="canvas" class="video"></canvas>
 
 
-<!--<div id="help">-->
-<!--    <button id="helpButton" class="btn btn-primary">Help</button>-->
-<!--</div>-->
+<div id="help">
+    <button id="helpButton" class="btn btn-warning" onclick="Connection.instance.sendAttention()">Attention</button>
+    <button id="helpButton2" class="btn btn-warning" onclick="Connection.instance.sendCameraChange()">Change Camera</button>
+</div>
 
 <button id="settings" class="btn btn-primary" onclick="openSettings()">Settings</button>
 
@@ -47,11 +48,6 @@
                 <span class="input-group-text" id="basic-addon1">CameraID</span>
                 <input type="text" id="settingsCameraID" class="form-control" placeholder="CameraID" aria-label="CameraID"
                        aria-describedby="basic-addon1" value="1">
-            </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon2">Server url</span>
-                <input type="text" id="settingsUrl" class="form-control" placeholder="default" aria-label="CameraID"
-                       aria-describedby="basic-addon2">
             </div>
         </div>
         <div class="card-footer">
@@ -95,7 +91,7 @@
     }
 
     #cameras div {
-        background-color: yellow;
+        background-color: white;
         width: 25%;
         height: 50px;
         color: #000;
