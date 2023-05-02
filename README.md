@@ -2,6 +2,7 @@
 
 atemTally is a simple tally light for the Blackmagic ATEM Mini Pro. It uses a browser to show which camera is currently on air. The tally light is controlled via the ATEM's network API.
 
+![Screenshot of the tally light](docs/img.png)
 
 ## Requirements
 A Blackmagic ATEM Mini Pro (other ATEMs might work, but are untested) connected to the same network as the computer running atemTally. 
