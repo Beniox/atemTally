@@ -1,6 +1,7 @@
 import express from "express";
 import {createServer} from "http";
 import {Server} from "socket.io";
+import path from "path";
 
 const dotenv = require('dotenv');
 dotenv.config()
@@ -16,6 +17,9 @@ myAtem.connect(process.env.ATEM_IP);
 
 const app = express();
 app.use(express.static('public'));
+app.get('/home', (req, res) => {
+    res.sendFile(path.join(__dirname , '..' , '/public/home.html'));
+});
 const httpServer = createServer(app);
 const io = new Server(httpServer, { /* options */});
 
@@ -37,10 +41,10 @@ io.on("connection", (socket) => {
     socket.on("help", (message) => {
         console.log(message);
         let msg = ""
-        if(message.type === "attention") {
+        if (message.type === "attention") {
             msg = `Camera ${message.camera} needs attention`
         }
-        if(message.type === "cameraChange") {
+        if (message.type === "cameraChange") {
             msg = `Camera ${message.camera} wants to be changed`
         }
 
@@ -88,3 +92,24 @@ type AtemState = {
     connected: boolean;
 }
 
+
+// @ts-ignore
+const {networkInterfaces} = require('os');
+const nets = networkInterfaces();
+const results = [] // Or just '{}', an empty object
+for (const name of Object.keys(nets)) {
+    for (const net of nets[name]) {
+        // Skip over non-IPv4 and internal (i.e. 127.0.0.1) addresses
+        // 'IPv4' is in Node <= 17, from 18 it's a number 4 or 6
+        const familyV4Value = typeof net.family === 'string' ? 'IPv4' : 4
+        if (net.family === familyV4Value && !net.internal) {
+            results.push(net.address);
+        }
+    }
+}
+
+notifier.notify({
+    title: "ATEM TAlly is running",
+    message: `Open http://${results[0]}:3000/home in your browser`,
+    open: `http://${results[0]}:3000/home`,
+});
