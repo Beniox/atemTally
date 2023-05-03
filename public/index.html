@@ -11,53 +11,66 @@
           integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 </head>
 <body>
-<h1>Atem Tally</h1>
-<div class="alert alert-danger" role="alert" id="errorAlert">
-    A simple danger alert—check it out!
-</div>
 
+<div class="container flex">
+    <h1>Atem Tally</h1>
 
-<div>
-    <video id="video" class="video" autoplay muted></video>
-    <div id="cameras">
-        <div id="camera1" class="cameras">1</div>
-        <div id="camera2" class="cameras">2</div>
-        <div id="camera3" class="cameras">3</div>
-        <div id="camera4" class="cameras">4</div>
+    <div class="alert alert-danger" role="alert" id="errorAlert">
+        A simple danger alert—check it out!
     </div>
-</div>
 
 
-<canvas id="canvas" class="video"></canvas>
+    <video id="video" class="video" autoplay muted></video> <!-- main tally light-->
+
+    <div id="cameras"> <!-- camera tally lights for all cameras -->
+        <div id="camera1" class="cameras"><h3>1</h3></div>
+        <div id="camera2" class="cameras"><h3>2</h3></div>
+        <div id="camera3" class="cameras"><h3>3</h3></div>
+        <div id="camera4" class="cameras"><h3>4</h3></div>
+    </div>
 
 
-<div id="help">
-    <button id="helpButton" class="btn btn-warning" onclick="Connection.instance.sendAttention()">Attention</button>
-    <button id="helpButton2" class="btn btn-warning" onclick="Connection.instance.sendCameraChange()">Change Camera</button>
-</div>
+    <canvas id="canvas" class="video">
+        <h2>1</h2>
+    </canvas> <!-- hidden canvas element to draw the video-->
 
-<button id="settings" class="btn btn-primary" onclick="openSettings()">Settings</button>
 
-<div id="settingsPage">
-    <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">Settings</h3>
+    <div id="help">
+        <h2>Request Help </h2>
+        <div id="helpCon">
+            <button id="helpButton" class="btn btn-warning bigBtn" onclick="Connection.instance.sendAttention()">
+                Attention
+            </button>
+            <button id="helpButton2" class="btn btn-warning bigBtn" onclick="Connection.instance.sendCameraChange()">
+                Change
+                Camera
+            </button>
         </div>
-        <div class="card-body">
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon1">CameraID</span>
-                <input type="text" id="settingsCameraID" class="form-control" placeholder="CameraID" aria-label="CameraID"
-                       aria-describedby="basic-addon1" value="1">
+    </div>
+
+    <button id="settings" class="btn btn-primary" onclick="openSettings()">Settings</button>
+
+    <div id="settingsPage">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Settings</h3>
+            </div>
+            <div class="card-body">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">CameraID</span>
+                    <input type="text" id="settingsCameraID" class="form-control" placeholder="CameraID"
+                           aria-label="CameraID"
+                           aria-describedby="basic-addon1" value="1">
+                </div>
+            </div>
+            <div class="card-footer">
+                <button id="saveSettings" class="btn btn-primary" onclick="saveSettings()">Save</button>
+                <button id="closeSettings" class="btn btn-primary" onclick="closeSettings()">Cancel</button>
             </div>
         </div>
-        <div class="card-footer">
-            <button id="saveSettings" class="btn btn-primary" onclick="saveSettings()">Save</button>
-            <button id="closeSettings" class="btn btn-primary" onclick="closeSettings()">Cancel</button>
-        </div>
     </div>
+
 </div>
-
-
 <script src="script.js"></script>
 </body>
 
@@ -72,6 +85,10 @@
 
     .video {
         width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 10px;
+        flex-grow: 2;
     }
 
     #canvas {
@@ -80,14 +97,17 @@
 
     h1 {
         text-align: center;
+        margin: 10px;
     }
 
     #cameras {
         display: flex;
         flex-direction: row;
         justify-content: space-around;
-        border: 1px solid #fff;
+        /*border: 1px solid #fff;*/
         gap: 10px;
+        border-radius: 10px;
+        padding: 4px;
     }
 
     #cameras div {
@@ -95,7 +115,12 @@
         width: 25%;
         height: 50px;
         color: #000;
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
+
 
     #settingsPage {
         display: none;
@@ -109,6 +134,41 @@
 
     #errorAlert {
         display: none;
+    }
+
+    #help {
+        margin-top: 10px;
+    }
+
+    #helpCon {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        gap: 10px;
+    }
+
+    #help h2 {
+        text-align: center;
+    }
+
+    .bigBtn {
+        width: 100%;
+        height: 100px;
+        font-size: 30px;
+    }
+
+    .flex {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 90vh;
+        /*margin-bottom: 30px;*/
+        gap: 10px;
+    }
+
+    #canvas h2 {
+        text-align: center;
+        z-index: 100;
     }
 
 </style>

@@ -1,7 +1,18 @@
 const cameras = document.getElementsByClassName('cameras');
 const video = document.getElementById('video');
 const canvas = document.getElementById('canvas');
+let dpi = window.devicePixelRatio;
 const context = canvas.getContext('2d');
+
+// Fix for blurry canvas
+let style_height = +getComputedStyle(canvas).getPropertyValue("height").slice(0, -2);
+let style_width = +getComputedStyle(canvas).getPropertyValue("width").slice(0, -2);
+canvas.setAttribute('height', style_height * dpi);
+canvas.setAttribute('width', style_width * dpi);
+
+const x = canvas.width / 2 -50;
+const y = canvas.height / 2+50;
+
 
 /**
  * Manage connection to server
@@ -75,6 +86,9 @@ class Connection {
             context.fillStyle = 'white';
         }
         context.fillRect(0, 0, canvas.width, canvas.height);
+        context.fillStyle = 'black';
+        context.font = '225px Arial';
+        context.fillText(Connection.instance.options.cameraID, x, y);
         video.srcObject = canvas.captureStream();
 
         for (let i = 0; i < cameras.length; i++) {

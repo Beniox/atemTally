@@ -2,6 +2,7 @@
   "name": "atem-tally",
   "version": "1.0.0",
   "description": "",
+  "author": "Beniox",
   "scripts": {
     "dev": "nodemon --exec ts-node src/index.ts",
     "build": "tsc",
