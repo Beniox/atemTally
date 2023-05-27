@@ -181,9 +181,7 @@ class Connection {
 
 }
 
-new
-
-Connection();
+new Connection();
 
 
 function openSettings() {
@@ -213,4 +211,8 @@ class ErrorAlert {
     static hide() {
         ErrorAlert.ele.style.display = 'none';
     }
+}
+
+function playVideo() {
+    video.play();
 }
