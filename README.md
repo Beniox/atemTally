@@ -11,8 +11,15 @@ Also, a browser is required to display the tally light, a phone or tablet will d
 
 ## Installation
 1. Clone this repository
-2. Set the IP address of your ATEM in the `ATEM_IP` environment variable
-3. Run `docker compose up -d` to start the server
+2. Rename .env.template to .env and fill in the required value
+3. Run `npm install`
+4. Run `npm run build`
+5. Run `npm run start`
+
+## Docker
+1. Clone this repository
+2. Set the required environment variables in the docker-compose.yml file
+3. Run `docker-compose up -d`
 
 
 ## Technologies

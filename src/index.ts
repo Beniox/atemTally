@@ -113,3 +113,5 @@ notifier.notify({
     message: `Open http://${results[0]}:3000/home in your browser`,
     open: `http://${results[0]}:3000/home`,
 });
+
+console.log(`Open http://${results[0]}:3000/home in your browser`);
