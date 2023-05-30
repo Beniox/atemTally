@@ -19,21 +19,18 @@
         A simple danger alert—check it out!
     </div>
 
-
     <video id="video" class="video" autoplay muted playsinline></video> <!-- main tally light-->
 
-    <div id="cameras"> <!-- camera tally lights for all cameras -->
+    <div id="camera"> <!-- camera tally lights for all cameras -->
         <div id="camera1" class="cameras"><h3>1</h3></div>
         <div id="camera2" class="cameras"><h3>2</h3></div>
         <div id="camera3" class="cameras"><h3>3</h3></div>
         <div id="camera4" class="cameras"><h3>4</h3></div>
     </div>
 
-
     <canvas id="canvas" class="video">
         <h2>1</h2>
     </canvas> <!-- hidden canvas element to draw the video-->
-
 
     <div id="help">
         <h2>Request Help </h2>
@@ -42,8 +39,7 @@
                 Attention
             </button>
             <button id="helpButton2" class="btn btn-warning bigBtn" onclick="Connection.instance.sendCameraChange()">
-                Change
-                Camera
+                Change Camera
             </button>
         </div>
     </div>
@@ -102,7 +98,7 @@
         margin: 10px;
     }
 
-    #cameras {
+    #camera {
         display: flex;
         flex-direction: row;
         justify-content: space-around;
@@ -112,7 +108,7 @@
         padding: 4px;
     }
 
-    #cameras div {
+    .cameras {
         background-color: white;
         width: 25%;
         height: 50px;
