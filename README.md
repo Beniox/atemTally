@@ -4,6 +4,11 @@ atemTally is a simple tally light for the Blackmagic ATEM Mini Pro. It uses a br
 
 ![Screenshot of the tally light](docs/img.png)
 
+## Features
+- See which camera is live and which is on preview
+- Contact computer, to get attention
+- Mock mode, to test the tally light without an ATEM
+
 ## Requirements
 A Blackmagic ATEM Mini Pro (other ATEMs might work, but are untested) connected to the same network as the computer running atemTally. 
 Also, a browser is required to display the tally light, a phone or tablet will do just fine.
@@ -34,4 +39,12 @@ Also, a browser is required to display the tally light, a phone or tablet will d
 ## Goals
 - [x] Display tally light in browser
 - [x] Add communication Channel
-- [ ] Live preview
+- [ ] Live preview of camera
+
+
+## Mock mode
+To test the tally light without an ATEM, you can use the mock mode. To enable it, set the environment variable `MOCK` to `true`.
+
+```http request
+POST http://localhost:3000/mock/random
+```
